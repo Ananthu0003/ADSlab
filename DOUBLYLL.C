@@ -1,27 +1,29 @@
 #include<stdio.h>
+#include<conio.h>
 #include<stdlib.h>
 void insbeg();
 void insmid();
 void insend();
 void delbeg();
 void delmid();
-void delsend();
+void delend();
 void display();
 void creation();
 void searching();
 struct node
 {
   int data;
-  struct node *head,*newnode,*temp,*temp1;
+  struct node *next,*prev;
 };
 typedef struct node node;
+node *head,*newnode,*temp,*temp1;
 void main()
 {
   int choice=0;
   clrscr();
   do
   {
-  printf("Enter Your choice 1.Creation\n2.Insertion at BIG\n3.Insertion at MiD\n4.Insertion at END\n5.Deletion from BIG\n6.Deletion from MID\n7.Deletion from END\n8.Search\n9.End\n Press a number:");
+  printf("\nEnter Your choice\n 1.Creation\n2.Insertion at BIG\n3.Insertion at MiD\n4.Insertion at END\n5.Deletion from BIG\n6.Deletion from MID\n7.Deletion from END\n8.Search\n9.End\n Press a number:");
   scanf("%d",&choice);
   switch(choice)
   {
@@ -59,14 +61,15 @@ void main()
 
 void creation()
 {
-  int ch=1,head=0;
+  int ch=1;
+  head=0;
   while(ch)
   {
     newnode=(node*)malloc(sizeof(node));
     printf("Enter the element to be inserted:");
     scanf("%d",&newnode->data);
     newnode->next=NULL;
-    newnode->pre=NULL;
+    newnode->prev=NULL;
     if(head==0)
     {
       head=temp=newnode;
@@ -74,10 +77,10 @@ void creation()
     else
     {
       temp->next=newnode;
-      newnode->pre=temp;
+      newnode->prev=temp;
       temp=newnode;
     }
-    printf("Do you want to continue?");
+    printf("Do you want to continue ?(1/0):");
     scanf("%d",&ch);
   }
 }
@@ -86,15 +89,15 @@ void display()
   int count=0;
   temp=head;
   printf("The linked list:");
-  printf("START->");
+  printf("START");
   while(temp!=NULL)
   {
     count=count+1;
-    printf("%d",temp->data);
+    printf("->%d",temp->data);
     temp=temp->next;
   }
-  printf("END");
-  printf("The no.of nodes is %d",count);
+  printf("->END");
+  printf("\nThe no.of nodes is %d",count);
 }
 
 void insbeg()
@@ -102,7 +105,7 @@ void insbeg()
   newnode=(node *)malloc(sizeof(node));
   printf("Enter the element to be inserted:");
   scanf("%d",&newnode->data);
-  newnode->next=NULL;
+  newnode->next=head;
   newnode->prev=NULL;
   head=newnode;
 }
@@ -132,10 +135,11 @@ void insmid()
       i++;
     }
     printf("Enter the element:");
-    newnode=(node*)malloc(sizeof(node));
-    scanf("%d",newnode);
+    newnode=(node *)malloc(sizeof(node));
+    scanf("%d",&newnode->data);
     newnode->next=temp;
-    temp->prev=temp1;
+    temp->prev=newnode;
+    newnode->prev=temp1;
     temp1->next=newnode;
   }
 }
@@ -154,20 +158,29 @@ void insend()
   temp->next=newnode;
   newnode->prev=temp;
 }
-
 void delbeg()
 {
-  int del;
   if(head==NULL)
   {
     printf("Node absent");
-    printf("Enter the data to delete:");
-    scanf("%d",&del);
   }
   temp=head;
+  head=temp->next;
+  head->prev=NULL;
+  free(temp);
+}
+
+void delmid()
+{
+  int del;
+  if(head==NULL)
+  printf("Node absent");
+  printf("Enter the data to delete:");
+  scanf("%d",&del);
+  temp=head;
   while(temp->data!=del)
-  {
-    if(temp->next==NULL)
+    {
+     if(temp->next==NULL)
     {
       printf("Given node not found");
       break;
@@ -194,23 +207,21 @@ void delbeg()
 
 void delend()
 {
- if(head==NULL)
- {
-   printf("Nde adsent");
- }
- temp=head;
- while(temp->next!=NULL)
- {
-   temp1=temp;
-   temp=temp->next;
- }
- temp->next=NULL;
+  if(head==NULL)
+  printf("Nde adsent");
+  temp=head;
+  while(temp->next!=NULL)
+  {
+    temp1=temp;
+    temp=temp->next;
+  }
+  temp1->next=NULL;
 }
 
 void searching()
 {
-  int item,i,flag=0;
-  printf("Enter the element to be searched:")
+  int item,i=1,flag=0;
+  printf("Enter the element to be searched:");
   scanf("%d",&item);
   temp=head;
   while(temp!=NULL)
