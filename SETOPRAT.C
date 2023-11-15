@@ -31,7 +31,7 @@ void main()
 	     break;
       default:printf("Wrong choice");
      }
-    printf("Do you wish to continue(1/0):");
+    printf("\nDo you wish to continue(1/0):");
     scanf("%d",&wish);
     }while(wish==1);
   getch();
@@ -55,12 +55,12 @@ void input()
     scanf("%d",&ele);
     b[ele]=1;
   }
-  printf("The first set:");
+  printf("\nThe first set:");
   for(i=1;i<=9;i++)
   {
     printf("%d",a[i]);
   }
-  printf("The second set:");
+  printf("\nThe second set:");
   for(i=1;i<=9;i++)
   {
     printf("%d",b[i]);
